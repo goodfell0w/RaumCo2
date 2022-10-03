@@ -8,6 +8,8 @@ public class RaumCo2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(RaumCo2Application.class, args);
+    }{
+
     }
 
 }
