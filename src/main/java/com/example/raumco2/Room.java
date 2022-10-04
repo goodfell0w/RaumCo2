@@ -25,18 +25,22 @@ public final class Room {
 
     /**
      *
-     * @param co2Value
-     * @return Returns a new Room Object with the updated co2Value
+     * @param co2Value CO2 Wert der Gemessen wird in Double
+     * Returns a new Room Object with the updated co2Value
      */
     public void setCo2Value(Double co2Value) {
         this.co2Value = co2Value;
     }
 
+    public String getRoomName(){
+        return this.name;
+    }
+
     public void publishCo2Value() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+        try (Connection connection = factory.newConnection("e004");
+             Channel channel = connection.createChannel(1)) {
             channel.queueDeclare(this.name, false, false, false, null);
             channel.basicPublish("", this.name, null, this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8));
             System.out.println(" [x] Sent '" + this.getCo2Value() + "'");
