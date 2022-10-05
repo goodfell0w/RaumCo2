@@ -10,38 +10,39 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
+import static com.example.raumco2.ConnectionConfigurator.*;
 import static java.lang.Thread.sleep;
 
-public final class Room {
+public final class Co2Sensor {
     private final String name;
-    public Double co2Value;
+    private Double co2Value;
 
-    public Room(String name) {
+    private Channel channel;
+
+    public Co2Sensor(String name, Channel channel) {
         this.name = name;
-        Thread newThread = new Thread(() -> {
-            this.initSensor();
-        });
-        newThread.start();
+        this.co2Value = 0.0;
+        this.channel = channel;
     }
 
     public Double getCo2Value() {
         return this.co2Value;
     }
 
-    private  void initSensor() {
+    /*private  void initSensor() {
         while(true){
             try {
                 sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            this.readCO2();
+            this.generateRandomCo2Value();
             publishCo2Value();
         }
-    }
+    }*/
 
 
-    private void readCO2(){
+    private void generateRandomCo2Value(){
         this.co2Value =  Math.random();
     }
 
@@ -50,22 +51,12 @@ public final class Room {
     }
 
     public void publishCo2Value() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        try (Connection connection = factory.newConnection(this.name);
-            Channel channel = connection.createChannel(1)) {
-            channel.queueDeclare(this.name, false, false, false, null);
-            channel.basicPublish("", this.name, null, this.parseValues());
-            System.out.println(" [x] Sent '" + this.getCo2Value() + " from room " + this.name);
+        try {
+            this.channel.basicPublish("", this.name, null, this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
         }
-    }
-
-    private byte[] parseValues(){
-        return this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8);
+        System.out.println(" [x] Sent '" + this.getCo2Value() + " from room " + this.name);
     }
 
 
@@ -81,7 +72,7 @@ public final class Room {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Room) obj;
+        var that = (Co2Sensor) obj;
         return Objects.equals(this.name, that.name) &&
                 Objects.equals(this.co2Value, that.co2Value);
     }
