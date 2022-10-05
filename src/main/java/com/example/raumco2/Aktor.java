@@ -22,9 +22,9 @@ public class Aktor {
     private void init(){
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        Connection connection = null;
+        //Connection connection = null;
         try {
-            connection = factory.newConnection(this.roomToHandle+"actors");
+            Connection connection = factory.newConnection(this.roomToHandle+"actors");
             Channel channel = connection.createChannel(2);
 
             channel.queueDeclare(this.roomToHandle+"actors", false, false, false, null);
@@ -35,7 +35,7 @@ public class Aktor {
                 System.out.println("Instructions is: " + instructionToOpen);
                 System.out.println("Window opened status is: " + this.windowIsOpen);
             };
-            channel.basicConsume(this.roomToHandle, true, deliverCallback, consumerTag -> {});
+            channel.basicConsume(this.roomToHandle+"actors", true, deliverCallback, consumerTag -> {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TimeoutException e) {

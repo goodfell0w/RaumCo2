@@ -35,9 +35,9 @@ public class ControllUnit {
         System.out.println("Connection was established for room: " + room.getRoomName());
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        Connection connection = null;
+        //Connection connection = null;
         try {
-            connection = factory.newConnection(room.getRoomName());
+            Connection connection = factory.newConnection(room.getRoomName());
             Channel channel = connection.createChannel(1);
 
             channel.queueDeclare(room.getRoomName(), false, false, false, null);
@@ -72,10 +72,8 @@ public class ControllUnit {
     private void publishToActors(boolean toOpen, String roomName) {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        System.out.println("toopen ist :" +toOpen);
-        try {
-            Connection connection = factory.newConnection(roomName+"actors");
-            Channel channel = connection.createChannel(2);
+        try (Connection connection = factory.newConnection(roomName+"actors");
+             Channel channel = connection.createChannel(2)){
             channel.queueDeclare(roomName+"actors", false, false, false, null);
             channel.basicPublish("", roomName+"actors", null, String.valueOf(toOpen).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
