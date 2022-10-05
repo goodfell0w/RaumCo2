@@ -25,7 +25,7 @@ public class RaumCo2Application {
         Double temp = 0.0;
         while(now().compareTo(startTime) < 0) {
             System.out.println("While entered");
-            e004.setCo2Value(500.2 + temp );
+            e004.setCo2Value(500 + temp );
             e004.publishCo2Value();
             controllUnit.consumeMessage(e004);
 

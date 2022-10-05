@@ -42,7 +42,7 @@ public final class Room {
         try (Connection connection = factory.newConnection("e004");
              Channel channel = connection.createChannel(1)) {
             channel.queueDeclare(this.name, false, false, false, null);
-            channel.basicPublish("", this.name, null, this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8));
+                channel.basicPublish("", this.name, null, this.parseValues());
             System.out.println(" [x] Sent '" + this.getCo2Value() + "'");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,6 +50,11 @@ public final class Room {
             throw new RuntimeException(e);
         }
     }
+
+    private byte[] parseValues(){
+        return this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8);
+    }
+
 
     public String name() {
         return name;

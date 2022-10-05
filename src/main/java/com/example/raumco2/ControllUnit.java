@@ -22,6 +22,8 @@ public class ControllUnit {
         //
     }
 
+    private double treshHold = 500;
+
     public void consumeMessage(Room room){
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -34,7 +36,8 @@ public class ControllUnit {
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                System.out.println(" [x] Received '" + message + "'");
+                String roomName = delivery.getEnvelope().getRoutingKey();
+                System.out.println(" [x] Received " + message + " von Raum " + roomName);
             };
             channel.basicConsume(room.getRoomName(), true, deliverCallback, consumerTag -> {});
         } catch (IOException e) {
