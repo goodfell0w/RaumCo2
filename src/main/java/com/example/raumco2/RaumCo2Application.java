@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Timer;
 
 import static java.lang.Thread.sleep;
@@ -15,25 +16,14 @@ public class RaumCo2Application {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ControllUnit controllUnit = new ControllUnit();
-        Room e004 = new Room("e004", -1.0);
-        Room e003 = new Room("e003", -1.0);
-
-        System.out.println("Start");
-        LocalTime startTime = now().plusMinutes(5);
-        System.out.println("Time started");
-        Double temp = 0.0;
-        while(now().compareTo(startTime) < 0) {
-            System.out.println("While entered");
-            e004.setCo2Value(500 + temp );
-            e004.publishCo2Value();
-            controllUnit.consumeMessage(e004);
-
-            sleep(5000);
-            temp += 5.0;
+        ArrayList<Room> rooms = new ArrayList<>();
+        rooms.add(new Room("e004"));
+        rooms.add(new Room("e003"));
+        ControllUnit controllUnit = new ControllUnit(rooms);
 
 
 
-        }
+        Aktor aktore004 = new Aktor("e004");
+        Aktor aktore003 = new Aktor("e003");
     }
 }
