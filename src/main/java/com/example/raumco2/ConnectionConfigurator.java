@@ -22,12 +22,15 @@ public class ConnectionConfigurator {
 
         try {
             connection = factory.newConnection(connectionName);
-            return connection.createChannel();
+            Channel channel = connection.createChannel();
+            System.out.println("Connection -> " + channel.getConnection() + " | " + connectionName + " | Channel -> " + channel.getChannelNumber() + " initialisiert");
+            return channel;
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Unnötig
     public static void setQueueNameSensor(Channel channel, Co2Sensor sensor){
 
         try {
@@ -35,7 +38,7 @@ public class ConnectionConfigurator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Connection -> " + channel.getConnection() + " | Channel -> " + channel.getChannelNumber() + " initialisiert");
+
     }
 
 

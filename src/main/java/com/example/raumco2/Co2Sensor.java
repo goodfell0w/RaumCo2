@@ -21,7 +21,7 @@ public final class Co2Sensor {
 
     public Co2Sensor(String name, Channel channel) {
         this.name = name;
-        this.co2Value = 0.0;
+        generateRandomCo2Value();
         this.channel = channel;
     }
 
@@ -52,6 +52,10 @@ public final class Co2Sensor {
 
     public void publishCo2Value() {
         try {
+            // Wird bereits durch setQueueNameSensor im ConnectionConfigurator gesetzt.
+            // Ein erneutes Declare wird ignoriert wenn der Channel bereits steht.
+            // Sinnvoll da Channels auch geschlossen werden können. -> Frage ist wann?
+            this.channel.queueDeclare(this.name, false, false, false, null);
             this.channel.basicPublish("", this.name, null, this.getCo2Value().toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -64,14 +64,12 @@ public class ControllUnit {
 
 
     private void publishToActors(boolean toOpen, String roomName) {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        try (Connection connection = factory.newConnection(roomName+"actors");
-             Channel channel = connection.createChannel(2)){
-            channel.queueDeclare(roomName+"actors", false, false, false, null);
-            channel.basicPublish("", roomName+"actors", null, String.valueOf(toOpen).getBytes(StandardCharsets.UTF_8));
-        } catch (IOException | TimeoutException e) {
-            throw new RuntimeException(e);
+
+        try {
+            this.channel.queueDeclare(roomName+"actorWindow", false, false, false, null);
+            this.channel.basicPublish("", roomName+"actorWindow", null, String.valueOf(toOpen).getBytes(StandardCharsets.UTF_8));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
