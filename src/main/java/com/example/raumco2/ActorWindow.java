@@ -6,18 +6,32 @@ import com.rabbitmq.client.DeliverCallback;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Klasse für die Aktoren der Fenster
+ * @version 1.0.0
+ * Klasse benötigt das channel Object der geöffneten Verbindung.
+ */
 public class ActorWindow {
 
-    private String roomToHandle;
+    private final String roomToHandle;
     private boolean windowIsOpen;
 
-    private Channel channel;
+    private final Channel channel;
 
+    /**
+     * Instantiates a new Actor window.
+     *
+     * @param roomToHandle the room to handle
+     * @param channel      the channel der Connection
+     */
     public ActorWindow(String roomToHandle, Channel channel) {
         this.roomToHandle = roomToHandle;
         this.channel = channel;
     }
 
+    /**
+     * Konsumiert die Nachricht, welche die ControllUnit auf der Queue published.
+     */
     public void consumeMessage(){
         try {
             channel.queueDeclare(this.roomToHandle+"actorWindow", false, false, false, null);
