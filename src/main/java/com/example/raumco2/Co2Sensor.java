@@ -13,18 +13,35 @@ import java.util.concurrent.TimeoutException;
 import static com.example.raumco2.ConnectionConfigurator.*;
 import static java.lang.Thread.sleep;
 
+/**
+ * Co2Sensor des Raumes
+ * name -> Raumname z.B. e004
+ * co2Value -> Wert in Double
+ * channel -> Zugewiesenes Channel Objekt der Verbindung für CO2Values
+ */
 public final class Co2Sensor {
     private final String name;
     private Double co2Value;
 
-    private Channel channel;
+    private final Channel channel;
 
+    /**
+     * Instantiates a new Co 2 sensor.
+     *
+     * @param name    the name
+     * @param channel the channel
+     */
     public Co2Sensor(String name, Channel channel) {
         this.name = name;
         generateRandomCo2Value();
         this.channel = channel;
     }
 
+    /**
+     * Gets co 2 value.
+     *
+     * @return the co 2 value
+     */
     public Double getCo2Value() {
         return this.co2Value;
     }
@@ -46,10 +63,19 @@ public final class Co2Sensor {
         this.co2Value =  Math.random();
     }
 
+    /**
+     * Get room name string.
+     *
+     * @return the string
+     */
     public String getRoomName(){
         return this.name;
     }
 
+    /**
+     * Veröffentlicht den Co2 Wert des Raumes durch eine QueueDeclaration auf den Raumnamen
+     * // TODO: 06.10.2022 Byteconvertierung auslagern in Funktion
+     */
     public void publishCo2Value() {
         try {
             // Wird bereits durch setQueueNameSensor im ConnectionConfigurator gesetzt.
@@ -64,10 +90,20 @@ public final class Co2Sensor {
     }
 
 
+    /**
+     * Name string.
+     *
+     * @return the string
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Co 2 value double.
+     *
+     * @return the double
+     */
     public Double co2Value() {
         return co2Value;
     }

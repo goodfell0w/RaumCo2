@@ -12,9 +12,18 @@ import static java.lang.Thread.sleep;
 import static java.time.LocalTime.now;
 
 
+/**
+ * The type Raum co 2 application.
+ */
 @SpringBootApplication
 public class RaumCo2Application {
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws InterruptedException the interrupted exception
+     */
     public static void main(String[] args) throws InterruptedException {
 
         // Erzeugung eines Channels Objekt mit einer Verbindung welcher für die Übertragung genutzt wird

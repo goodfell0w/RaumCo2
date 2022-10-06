@@ -8,11 +8,23 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-@Service
+/**
+ * Klasse mit Funktionalität zum aufsetzten der Verbindungen zu MQTT
+ */
 public class ConnectionConfigurator {
 
+    /**
+     * Instantiates a new Connection configurator.
+     */
     public ConnectionConfigurator() {}
 
+    /**
+     * Sets connection.
+     *
+     * @param connectionName the connection name
+     * @return Channel Objekt mit der Verbindung
+     * // TODO: 06.10.2022 Verbindungsdetails aufsetzen mit Benutzerkennung und Passwort
+     */
     public static Channel setupConnection(String connectionName) {
 
         ConnectionFactory factory = new ConnectionFactory();
@@ -30,7 +42,13 @@ public class ConnectionConfigurator {
         }
     }
 
-    // Unnötig
+    /**
+     * Setzt einmalig den Queue Bezeichner. -> aktuell unnötig
+     *
+     * @param channel the channel
+     * @param sensor  the sensor
+     */
+
     public static void setQueueNameSensor(Channel channel, Co2Sensor sensor){
 
         try {
