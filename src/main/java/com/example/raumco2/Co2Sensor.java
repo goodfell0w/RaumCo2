@@ -46,7 +46,15 @@ public final class Co2Sensor {
         return this.co2Value;
     }
 
-    /*private  void initSensor() {
+    public void start(){
+        Thread newThread = new Thread(() -> {
+            this.initSensor();
+        });
+        newThread.start();
+    }
+
+
+    private void initSensor() {
         while(true){
             try {
                 sleep(5000);
@@ -56,7 +64,7 @@ public final class Co2Sensor {
             this.generateRandomCo2Value();
             publishCo2Value();
         }
-    }*/
+    }
 
 
     private void generateRandomCo2Value(){

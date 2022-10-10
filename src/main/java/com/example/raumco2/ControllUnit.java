@@ -37,7 +37,8 @@ public class ControllUnit {
     }
 
 
-    private void init() {
+
+    public void start() {
         this.co2Sensors.forEach((this::consumeMessage));
     }
 
